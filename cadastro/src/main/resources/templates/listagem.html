@@ -92,38 +92,48 @@
     <!-- JavaScript para manipulação do pop-up de edição -->
     <script>
         $(document).ready(function () {
+            let name, email, tel; // Variáveis para armazenar os valores iniciais
+
             $('.edit-button').click(function () {
-            const name = $(this).closest('tr').find('.cadastro-nome').text();
-            const email = $(this).closest('tr').find('.cadastro-email').text();
-            const tel = $(this).closest('tr').find('.cadastro-tel').text();
+                name = $(this).closest('tr').find('.cadastro-nome').text();
+                email = $(this).closest('tr').find('.cadastro-email').text();
+                tel = $(this).closest('tr').find('.cadastro-tel').text();
 
-            $('#editModal #editNome').val(name);
-            $('#editModal #editEmail').val(email); // Preencha o campo de e-mail conforme necessário
-            $('#editModal #editTel').val(tel); // Preencha o campo de telefone conforme necessário
+                $('#editModal #editNome').val(name);
+                $('#editModal #editEmail').val(email);
+                $('#editModal #editTel').val(tel);
 
-            $('#editModal').modal('show');
-        });
+                $('#editModal').modal('show');
+            });
 
+            $('#editModal button[data-dismiss="modal"]').click(function () {
+                $('#editModal').modal('hide');
+            });
 
             $('#saveChanges').click(function () {
                 const newName = $('#editNome').val();
+                const newEmail = $('#editEmail').val();
+                const newTel = $('#editTel').val();
 
-                // Faça uma solicitação AJAX para o controlador de atualização
+                // Solicitação AJAX para o controlador de atualização
                 $.ajax({
                     url: '/cadastroResourceUpdate',
                     type: 'POST',
                     data: {
                         oldName: name,
                         newName: newName,
-                        // Envie outros dados de edição conforme necessário
+                        oldEmail: email,
+                        newEmail: newEmail,
+                        oldTel: tel,
+                        newTel: newTel,
                     },
                     success: function () {
-                        // Atualize a tabela ou faça outras ações após a atualização
+                        // Atualiza a tabela ou faz outras ações após a atualização
                         $('#editModal').modal('hide');
-                        location.reload(); // Recarregue a página ou atualize a tabela com os dados atualizados
+                        location.reload(); // Recarrega a página ou atualiza a tabela com os dados atualizados
                     },
                     error: function () {
-                        // Lide com erros, se houver algum
+                        // Lida com erros, se houver algum
                         alert('Ocorreu um erro ao atualizar o cadastro.');
                     }
                 });

@@ -30,18 +30,28 @@ public class CadastroController {
     }
 
     @RequestMapping("cadastroResourceUpdate")
-    public String doUpdate(Model model, String oldName, String newName) {
+    public String doUpdate(
+        Model model,
+        String oldName,
+        String newName,
+        String oldEmail,
+        String newEmail,
+        String oldTel,
+        String newTel
+    ) {
         for (CadastroDTO cadastro : cadastros) {
             if (cadastro.getInputNome().equals(oldName)) {
                 cadastro.setInputNome(newName); // Atualiza o nome com o novo valor
-                break;
+                cadastro.setInputEmail(newEmail); // Atualiza o email com o novo valor
+                cadastro.setInputTel(newTel); // Atualiza o telefone com o novo valor
+                break; // Sai do loop assim que o registro é encontrado e atualizado
             }
         }
     
         model.addAttribute("cadastros", cadastros);
         return "listagem";
     }
-
+    
     @RequestMapping("cadastroResourceDelete")
     public String doDelete(String name, Model model) {
         for (CadastroDTO cadastro : cadastros) {
