@@ -127,10 +127,11 @@
                         oldTel: tel,
                         newTel: newTel,
                     },
-                    success: function () {
-                        // Atualiza a tabela ou faz outras ações após a atualização
+                    success: function (response) {
+                        // Atualiza a tabela com os valores atualizados
                         $('#editModal').modal('hide');
-                        location.reload(); // Recarrega a página ou atualiza a tabela com os dados atualizados
+                        updateTableRow(name, newName, newEmail, newTel);
+                        location.reload();
                     },
                     error: function () {
                         // Lida com erros, se houver algum
@@ -138,6 +139,13 @@
                     }
                 });
             });
+
+            function updateTableRow(oldName, newName, newEmail, newTel) {
+                const row = $('#row-' + oldName); // Use oldName em vez de name
+                row.find('.cadastro-nome').text(newName);
+                row.find('.cadastro-email').text(newEmail);
+                row.find('.cadastro-tel').text(newTel);
+            }
         });
     </script>
 </body>
