@@ -3,6 +3,7 @@
 <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -18,23 +19,56 @@
         </div>
         <div class="mb-3">
             <label for="formGroupExampleTel" class="form-label">Telefone</label>
-            <input type="number" class="form-control" name="inputTel" placeholder="Insira o Telefone">
+            <input type="tel" class="form-control" name="inputTel" placeholder="Insira o Telefone">
         </div>
         
         <button type="submit" class="btn btn-primary">Enviar</button>
     </form>
 
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Editar Cadastro</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="editForm" action="#" method="post">
+                        <div class="mb-3">
+                            <label for="editNome" class="form-label">Novo Nome</label>
+                            <input type="text" class="form-control" id="editNome" name="editNome" placeholder="Insira o Novo Nome">
+                        </div>
+                        <div class="mb-3">
+                            <label for="editEmail" class="form-label">Novo Email</label>
+                            <input type="email" class="form-control" id="editEmail" name="editEmail" placeholder="Insira o Novo Email">
+                        </div>
+                        <div class="mb-3">
+                            <label for="editTel" class="form-label">Novo Telefone</label>
+                            <input type="tel" class="form-control" id="editTel" name="editTel" placeholder="Insira o Novo Telefone">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="saveChanges">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <table class="table">
         <thead>
-          <tr>
-            <th scope="col">Nome</th>
-            <th scope="col">Email</th>
-            <th scope="col">Telefone</th>
-            <th scope="col">Ações</th>
-          </tr>
+            <tr>
+                <th scope="col">Nome</th>
+                <th scope="col">Email</th>
+                <th scope="col">Telefone</th>
+                <th scope="col">Ações</th>
+            </tr>
         </thead>
         <tbody>
-           <tr th:each="cadastro, rowStat : ${cadastros}" id="row-[[${rowStat.index}]]">
+            <tr th:each="cadastro, rowStat : ${cadastros}" id="row-[[${rowStat.index}]]">
                 <td>
                     <span class="editable" th:text="${cadastro.inputNome}"></span>
                     <input type="text" class="form-control edit-input" name="novoNome" placeholder="Novo Nome" style="display: none;">
@@ -42,8 +76,8 @@
                 <td th:text="${cadastro.inputEmail}"></td>
                 <td th:text="${cadastro.inputTel}"></td>
                 <td>
-                    <button type="button" class="btn btn-primary edit-button" onclick="toggleEditFields(this);">
-                        <a th:href="@{cadastroResourceUpdate(name=${cadastro.inputNome})}" style="color: white; text-decoration: none;">Editar</a>
+                    <button type="button" class="btn btn-primary edit-button" data-toggle="modal" data-target="#editModal" data-name="${cadastro.inputNome}" data-email="${cadastro.inputEmail}" data-tel="${cadastro.inputTel}">
+                        Editar
                     </button>
                 </td>
                 <td>
@@ -51,47 +85,50 @@
                         <a th:href="@{cadastroResourceDelete(name=${cadastro.inputNome})}" style="color: white; text-decoration: none;">Excluir</a>
                     </button>
                 </td>
-           </tr>
+            </tr>
         </tbody>
-      </table>
-    
-</body>
-<script>
-    // Função para alternar entre a visualização do nome e o campo de entrada de texto
-    function toggleEditFields(button) {
-        const row = button.closest('tr');
-        const editable = row.querySelector('.editable');
-        const inputField = row.querySelector('.edit-input');
-        const editButton = row.querySelector('.edit-button');
+    </table>
 
-        if (editable.style.display === 'none') {
-            editable.style.display = 'inline';
-            inputField.style.display = 'none';
-            editButton.innerText = 'Editar';
-            saveNewName(row);
-        } else {
-            editable.style.display = 'none';
-            inputField.style.display = 'inline';
-            inputField.value = editable.textContent; // Preencha o campo de entrada com o valor atual
-            inputField.focus();
-            editButton.innerText = 'Salvar';
+    <!-- JavaScript para manipulação do pop-up de edição -->
+    <script>
+        $(document).ready(function () {
+            $('.edit-button').click(function () {
+            const name = $(this).data('name');
+            const email = $(this).data('email'); // Se você quiser pré-preencher o campo de e-mail
+            const tel = $(this).data('tel'); // Se você quiser pré-preencher o campo de telefone
 
-            // Adicione um evento de pressionamento de tecla para salvar quando a tecla "ENTER" for pressionada
-            inputField.addEventListener('keyup', function(event) {
-                if (event.key === 'Enter') {
-                    saveNewName(row);
-                }
+            $('#editModal #editNome').val(name);
+            $('#editModal #editEmail').val(email); // Preencha o campo de e-mail conforme necessário
+            $('#editModal #editTel').val(tel); // Preencha o campo de telefone conforme necessário
+
+            $('#editModal').modal('show');
+        });
+
+
+            $('#saveChanges').click(function () {
+                const newName = $('#editNome').val();
+
+                // Faça uma solicitação AJAX para o controlador de atualização
+                $.ajax({
+                    url: '/cadastroResourceUpdate',
+                    type: 'POST',
+                    data: {
+                        oldName: name,
+                        newName: newName,
+                        // Envie outros dados de edição conforme necessário
+                    },
+                    success: function () {
+                        // Atualize a tabela ou faça outras ações após a atualização
+                        $('#editModal').modal('hide');
+                        location.reload(); // Recarregue a página ou atualize a tabela com os dados atualizados
+                    },
+                    error: function () {
+                        // Lide com erros, se houver algum
+                        alert('Ocorreu um erro ao atualizar o cadastro.');
+                    }
+                });
             });
-        }
-    }
-
-    // Função para salvar o novo nome no campo de texto editável
-    function saveNewName(row) {
-        const editable = row.querySelector('.editable');
-        const inputField = row.querySelector('.edit-input');
-
-        editable.textContent = inputField.value;
-        toggleEditFields(row); // Alternar de volta para a visualização
-    }
-</script>
+        });
+    </script>
+</body>
 </html>
