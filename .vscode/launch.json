@@ -19,6 +19,16 @@
             "projectName": "cadastro",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-CadastroApplication<cadastro>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "br.edu.iftm.tspi.cadastro.CadastroApplication",
+            "projectName": "cadastro",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
         }
     ]
 }

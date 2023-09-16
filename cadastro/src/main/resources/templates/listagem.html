@@ -25,12 +25,14 @@
               <tr>
                 <th scope="col">Nome</th>
                 <th scope="col">Email</th>
+                <th scope="col">Telefone</th>
               </tr>
             </thead>
             <tbody>
                <tr th:each="cadastro : ${cadastros}">
                     <td th:text="${cadastro.inputNome}"></td>
                     <td th:text="${cadastro.inputEmail}"></td>
+                    <td th:text="${cadastro.inputTel}"></td>
                </tr>
             </tbody>
           </table>

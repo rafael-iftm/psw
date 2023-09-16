@@ -7,5 +7,6 @@ public class CadastroDTO {
 
     private String inputNome;
     private String inputEmail;
+    private String inputTel;
     
 }
