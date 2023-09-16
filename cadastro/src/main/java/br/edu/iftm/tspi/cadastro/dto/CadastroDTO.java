@@ -6,6 +6,7 @@ import lombok.Data;
 public class CadastroDTO {
 
     private String inputNome;
+    private String inputNovoNome;
     private String inputEmail;
     private String inputTel;
     

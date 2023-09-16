@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import br.edu.iftm.tspi.cadastro.dto.CadastroDTO;
 
@@ -28,5 +29,30 @@ public class CadastroController {
         model.addAttribute("cadastros",cadastros);
         return "listagem";
     }
-    
+
+    @RequestMapping("cadastroResourceUpdate")
+    public String doUpdate(Model model, String novoNome, String name) {
+        for (CadastroDTO cadastro : cadastros) {
+            if (cadastro.getInputNome().equals(name)) {
+                cadastro.setInputNome(novoNome);
+                break;
+            }
+        }
+
+        model.addAttribute("cadastros", cadastros);
+        return "listagem";
+    }
+
+    @RequestMapping("cadastroResourceDelete")
+    public String doDelete(String name, Model model) {
+        for (CadastroDTO cadastro : cadastros) {
+            if (cadastro.getInputNome().equals(name)) {
+                cadastros.remove(cadastro);
+                break;
+            }
+        }
+
+        model.addAttribute("cadastros", cadastros);
+        return "listagem";
+    }
 }

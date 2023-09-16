@@ -1,42 +1,97 @@
+<!DOCTYPE html>
 <html>
-    <head>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
-    </head>
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+</head>
 
-    <body>
-
-        <form method="POST" action="cadastroResourcePost">
-            <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Endereço de Email</label>
-                <input type="email" class="form-control" name="inputEmail" aria-describedby="emailHelp">
-                <div id="emailHelp" class="form-text">Não compartilhamos seu email com ninguém.</div>
-            </div>
-            <div class="mb-3">
-                <label for="formGroupExampleInput" class="form-label">Nome</label>
-                <input type="text" class="form-control" name="inputNome" placeholder="Insira o Nome">
-            </div>
-            
-            <button type="submit" class="btn btn-primary">Enviar</button>
-        </form>
-
-        <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">Nome</th>
-                <th scope="col">Email</th>
-                <th scope="col">Telefone</th>
-              </tr>
-            </thead>
-            <tbody>
-               <tr th:each="cadastro : ${cadastros}">
-                    <td th:text="${cadastro.inputNome}"></td>
-                    <td th:text="${cadastro.inputEmail}"></td>
-                    <td th:text="${cadastro.inputTel}"></td>
-               </tr>
-            </tbody>
-          </table>
+<body>
+    <form method="POST" action="cadastroResourcePost">
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Endereço de Email</label>
+            <input type="email" class="form-control" name="inputEmail" aria-describedby="emailHelp">
+            <div id="emailHelp" class="form-text">Não compartilhamos seu email com ninguém.</div>
+        </div>
+        <div class="mb-3">
+            <label for="formGroupExampleInput" class="form-label">Nome</label>
+            <input type="text" class="form-control" name="inputNome" placeholder="Insira o Nome">
+        </div>
+        <div class="mb-3">
+            <label for="formGroupExampleTel" class="form-label">Telefone</label>
+            <input type="number" class="form-control" name="inputTel" placeholder="Insira o Telefone">
+        </div>
         
-    </body>
+        <button type="submit" class="btn btn-primary">Enviar</button>
+    </form>
 
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Nome</th>
+            <th scope="col">Email</th>
+            <th scope="col">Telefone</th>
+            <th scope="col">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+           <tr th:each="cadastro, rowStat : ${cadastros}" id="row-[[${rowStat.index}]]">
+                <td>
+                    <span class="editable" th:text="${cadastro.inputNome}"></span>
+                    <input type="text" class="form-control edit-input" name="novoNome" placeholder="Novo Nome" style="display: none;">
+                </td>
+                <td th:text="${cadastro.inputEmail}"></td>
+                <td th:text="${cadastro.inputTel}"></td>
+                <td>
+                    <button type="button" class="btn btn-primary edit-button" onclick="toggleEditFields(this);">
+                        <a th:href="@{cadastroResourceUpdate(name=${cadastro.inputNome})}" style="color: white; text-decoration: none;">Editar</a>
+                    </button>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-primary">
+                        <a th:href="@{cadastroResourceDelete(name=${cadastro.inputNome})}" style="color: white; text-decoration: none;">Excluir</a>
+                    </button>
+                </td>
+           </tr>
+        </tbody>
+      </table>
+    
+</body>
+<script>
+    // Função para alternar entre a visualização do nome e o campo de entrada de texto
+    function toggleEditFields(button) {
+        const row = button.closest('tr');
+        const editable = row.querySelector('.editable');
+        const inputField = row.querySelector('.edit-input');
+        const editButton = row.querySelector('.edit-button');
+
+        if (editable.style.display === 'none') {
+            editable.style.display = 'inline';
+            inputField.style.display = 'none';
+            editButton.innerText = 'Editar';
+            saveNewName(row);
+        } else {
+            editable.style.display = 'none';
+            inputField.style.display = 'inline';
+            inputField.value = editable.textContent; // Preencha o campo de entrada com o valor atual
+            inputField.focus();
+            editButton.innerText = 'Salvar';
+
+            // Adicione um evento de pressionamento de tecla para salvar quando a tecla "ENTER" for pressionada
+            inputField.addEventListener('keyup', function(event) {
+                if (event.key === 'Enter') {
+                    saveNewName(row);
+                }
+            });
+        }
+    }
+
+    // Função para salvar o novo nome no campo de texto editável
+    function saveNewName(row) {
+        const editable = row.querySelector('.editable');
+        const inputField = row.querySelector('.edit-input');
+
+        editable.textContent = inputField.value;
+        toggleEditFields(row); // Alternar de volta para a visualização
+    }
+</script>
 </html>
