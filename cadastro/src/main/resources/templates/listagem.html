@@ -70,11 +70,11 @@
         <tbody>
             <tr th:each="cadastro, rowStat : ${cadastros}" id="row-[[${rowStat.index}]]">
                 <td>
-                    <span class="editable" th:text="${cadastro.inputNome}"></span>
+                    <span class="cadastro-nome" th:text="${cadastro.inputNome}"></span>
                     <input type="text" class="form-control edit-input" name="novoNome" placeholder="Novo Nome" style="display: none;">
                 </td>
-                <td th:text="${cadastro.inputEmail}"></td>
-                <td th:text="${cadastro.inputTel}"></td>
+                <td class="cadastro-email" th:text="${cadastro.inputEmail}"></td>
+                <td class="cadastro-tel" th:text="${cadastro.inputTel}"></td>
                 <td>
                     <button type="button" class="btn btn-primary edit-button" data-toggle="modal" data-target="#editModal" data-name="${cadastro.inputNome}" data-email="${cadastro.inputEmail}" data-tel="${cadastro.inputTel}">
                         Editar
@@ -93,9 +93,9 @@
     <script>
         $(document).ready(function () {
             $('.edit-button').click(function () {
-            const name = $(this).data('name');
-            const email = $(this).data('email'); // Se você quiser pré-preencher o campo de e-mail
-            const tel = $(this).data('tel'); // Se você quiser pré-preencher o campo de telefone
+            const name = $(this).closest('tr').find('.cadastro-email').text();
+            const email = $(this).closest('tr').find('.cadastro-email').text();
+            const tel = $(this).closest('tr').find('.cadastro-tel').text();
 
             $('#editModal #editNome').val(name);
             $('#editModal #editEmail').val(email); // Preencha o campo de e-mail conforme necessário
