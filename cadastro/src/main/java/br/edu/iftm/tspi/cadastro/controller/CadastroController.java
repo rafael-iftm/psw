@@ -1,67 +1,62 @@
 package br.edu.iftm.tspi.cadastro.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import br.edu.iftm.tspi.cadastro.dto.CadastroDTO;
+import br.edu.iftm.tspi.cadastro.dao.CadastroDAO;
+import br.edu.iftm.tspi.cadastro.domain.Cadastro;
 
 @Controller
+@RequestMapping("/cadastros") // Define o prefixo para todas as URLs neste controlador
 public class CadastroController {
+    @Autowired
+    private CadastroDAO dadosCadastrados;
 
-    List<CadastroDTO> cadastros = new ArrayList<>();
-
-    @PostMapping("cadastroResourcePost")
-    public String doPost(CadastroDTO dto,Model model) {
-        cadastros.add(dto);
-        //model.addAttribute("cadastros",cadastros);
-        //return "listagem";
-        return doGet(model);
-    }
-
-    @RequestMapping("cadastroResourceGet")
-    public String doGet(Model model) {
-        model.addAttribute("cadastros",cadastros);
-        return "listagem";
-    }
-
-    @RequestMapping("cadastroResourceUpdate")
-    public String doUpdate(
-        Model model,
-        String oldName,
-        String newName,
-        String oldEmail,
-        String newEmail,
-        String oldTel,
-        String newTel
-    ) {
-        for (CadastroDTO cadastro : cadastros) {
-            if (cadastro.getInputNome().equals(oldName)) {
-                cadastro.setInputNome(newName); // Atualiza o nome com o novo valor
-                cadastro.setInputEmail(newEmail); // Atualiza o email com o novo valor
-                cadastro.setInputTel(newTel); // Atualiza o telefone com o novo valor
-                break; // Sai do loop assim que o registro é encontrado e atualizado
-            }
-        }
-    
+    @GetMapping
+    public String listarCadastros(Model model) {
+        List<Cadastro> cadastros = dadosCadastrados.listarCadastros();
         model.addAttribute("cadastros", cadastros);
-        return "listagem";
+        return "paginaListagem";
+    }
+
+    @PostMapping("/inserir")
+    public String inserirCadastro(@ModelAttribute Cadastro cadastro) {
+        dadosCadastrados.inserirCadastro(cadastro);
+        return "redirect:/cadastros";
+    }
+
+    @GetMapping("/editar/{email}")
+    public String exibirFormularioEdicao(@PathVariable String email, Model model) {
+        Cadastro cadastro = dadosCadastrados.buscarCadastroPorEmail(email);
+        model.addAttribute("cadastro", cadastro);
+        return "paginaEdicao";
     }
     
-    @RequestMapping("cadastroResourceDelete")
-    public String doDelete(String name, Model model) {
-        for (CadastroDTO cadastro : cadastros) {
-            if (cadastro.getInputNome().equals(name)) {
-                cadastros.remove(cadastro);
-                break;
-            }
-        }
+    @PostMapping("/atualizar/{email}")
+    public String atualizarCadastro(@PathVariable String email, @ModelAttribute Cadastro cadastro) {
+        dadosCadastrados.atualizarCadastro(cadastro);
+        return "redirect:/cadastros";
+    }
 
+    @PostMapping("/excluir/{email}")
+    public String excluirCadastro(@PathVariable String email) {
+        dadosCadastrados.excluirCadastro(email);
+        return "redirect:/cadastros";
+    }
+
+    @GetMapping("/pesquisar")
+    public String pesquisarCadastrosPorNome(@RequestParam String nome, Model model) {
+        List<Cadastro> cadastros = dadosCadastrados.buscarCadastrosPorNome(nome);
         model.addAttribute("cadastros", cadastros);
-        return "listagem";
+        return "paginaListagem";
     }
 }
