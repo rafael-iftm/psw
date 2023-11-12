@@ -29,9 +29,15 @@ public class CadastroController {
     }
 
     @PostMapping("/inserir")
-    public String inserirCadastro(@ModelAttribute Cadastro cadastro) {
+    public String inserirCadastro(@ModelAttribute Cadastro cadastro, Model model) {
         dadosCadastrados.inserirCadastro(cadastro);
-        return "redirect:/cadastros";
+
+        // Adicione a lista atualizada ao modelo para ser exibida na página de listagem
+        List<Cadastro> cadastros = dadosCadastrados.listarCadastros();
+        model.addAttribute("cadastros", cadastros);
+
+        // Retorne a página de listagem
+        return "paginaListagem";
     }
 
     @GetMapping("/editar/{email}")
@@ -40,17 +46,29 @@ public class CadastroController {
         model.addAttribute("cadastro", cadastro);
         return "paginaEdicao";
     }
-    
+
     @PostMapping("/atualizar/{email}")
-    public String atualizarCadastro(@PathVariable String email, @ModelAttribute Cadastro cadastro) {
+    public String atualizarCadastro(@PathVariable String email, @ModelAttribute Cadastro cadastro, Model model) {
         dadosCadastrados.atualizarCadastro(cadastro);
-        return "redirect:/cadastros";
+
+        // Adicione a lista atualizada ao modelo para ser exibida na página de listagem
+        List<Cadastro> cadastros = dadosCadastrados.listarCadastros();
+        model.addAttribute("cadastros", cadastros);
+
+        // Retorne a página de listagem
+        return "paginaListagem";
     }
 
     @PostMapping("/excluir/{email}")
-    public String excluirCadastro(@PathVariable String email) {
+    public String excluirCadastro(@PathVariable String email, Model model) {
         dadosCadastrados.excluirCadastro(email);
-        return "redirect:/cadastros";
+
+        // Adicione a lista atualizada ao modelo para ser exibida na página de listagem
+        List<Cadastro> cadastros = dadosCadastrados.listarCadastros();
+        model.addAttribute("cadastros", cadastros);
+
+        // Retorne a página de listagem
+        return "paginaListagem";
     }
 
     @GetMapping("/pesquisar")
