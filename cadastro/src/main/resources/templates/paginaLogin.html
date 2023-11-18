@@ -6,40 +6,36 @@
         body {
             background-color: #f0f0f0;
         }
-
-        .form-container {
+    
+        .login-container {
             max-width: 400px;
             margin: 0 auto;
             padding: 40px;
             border: 1px solid #ccc;
             border-radius: 5px;
-            background-color: #f9f9f9;
+            background-color: #fff;
             box-shadow: 0px 0px 10px 0px #aaa;
         }
-
-        .form-title {
+    
+        .login-title {
             text-align: center;
         }
     </style>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro</title>
 </head>
 <body>
     <div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
-        <div class="form-container">
-            <h2 class="form-title">Formulário de Cadastro</h2>
-            <form method="POST" action="/cadastros/inserir">
+        <div class="login-container">
+            <h2 class="login-title">Formulário de Login</h2>
+            <form method="POST" action="/login/verificar">
                 <div class="mb-3">
                     <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
-                    <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" required>
-                    <div id="emailHelp" class="form-text">Nunca compartilharemos seu e-mail com mais ninguém.</div>
+                    <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" required> 
                 </div>
                 <div class="mb-3">
-                    <label for="nome" class="form-label">Nome <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" id="nome" name="nome" placeholder="Digite seu Nome" required>
+                    <label for="senha" class="form-label">Senha <span class="text-danger">*</span></label>
+                    <input type="password" class="form-control" id="senha" name="senha" required>
                 </div>
-                <button type="submit" class="btn btn-primary">Enviar</button>
+                <button type="submit" class="btn btn-primary">Entrar</button>
             </form>
         </div>
     </div>

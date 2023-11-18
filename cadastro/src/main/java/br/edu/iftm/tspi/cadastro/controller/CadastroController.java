@@ -16,7 +16,7 @@ import br.edu.iftm.tspi.cadastro.dao.CadastroDAO;
 import br.edu.iftm.tspi.cadastro.domain.Cadastro;
 
 @Controller
-@RequestMapping("/cadastros") // Define o prefixo para todas as URLs neste controlador
+@RequestMapping("/cadastros")
 public class CadastroController {
     @Autowired
     private CadastroDAO dadosCadastrados;
@@ -31,12 +31,8 @@ public class CadastroController {
     @PostMapping("/inserir")
     public String inserirCadastro(@ModelAttribute Cadastro cadastro, Model model) {
         dadosCadastrados.inserirCadastro(cadastro);
-
-        // Adicione a lista atualizada ao modelo para ser exibida na página de listagem
         List<Cadastro> cadastros = dadosCadastrados.listarCadastros();
         model.addAttribute("cadastros", cadastros);
-
-        // Retorne a página de listagem
         return "paginaListagem";
     }
 
@@ -50,24 +46,16 @@ public class CadastroController {
     @PostMapping("/atualizar/{email}")
     public String atualizarCadastro(@PathVariable String email, @ModelAttribute Cadastro cadastro, Model model) {
         dadosCadastrados.atualizarCadastro(cadastro);
-
-        // Adicione a lista atualizada ao modelo para ser exibida na página de listagem
         List<Cadastro> cadastros = dadosCadastrados.listarCadastros();
         model.addAttribute("cadastros", cadastros);
-
-        // Retorne a página de listagem
         return "paginaListagem";
     }
 
     @PostMapping("/excluir/{email}")
     public String excluirCadastro(@PathVariable String email, Model model) {
         dadosCadastrados.excluirCadastro(email);
-
-        // Adicione a lista atualizada ao modelo para ser exibida na página de listagem
         List<Cadastro> cadastros = dadosCadastrados.listarCadastros();
         model.addAttribute("cadastros", cadastros);
-
-        // Retorne a página de listagem
         return "paginaListagem";
     }
 
