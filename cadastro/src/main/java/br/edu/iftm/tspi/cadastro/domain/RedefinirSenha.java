@@ -7,7 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Cadastro {
+public class RedefinirSenha {
     private String usuario;
-    private String senha;
+    private String novaSenha;
+    private String confirmeNovaSenha;
 }
