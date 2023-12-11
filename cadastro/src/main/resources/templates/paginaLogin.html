@@ -24,11 +24,15 @@
 
         .forgot-password-link {
             display: block;
-            margin-top: 10px;
+            margin: 10px 0px;
         }
 
         .signup-link {
             margin-top: 15px;
+        }
+
+        .form-label{
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -37,18 +41,18 @@
         <div class="login-container">
             <h2 class="login-title">Formulário de Login</h2>
             <form method="POST" action="/login/entrar">
-                <div class="mb-3">
-                    <label for="usuario" class="form-label">Usuario <span class="text-danger">*</span></label>
-                    <input type="usuario" class="form-control" id="usuario" name="usuario" placeholder="Digite seu Usuario" aria-describedby="usuarioHelp" required> 
+                <div class="form-group">
+                    <label for="loginUsuario" class="form-label">Usuário <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="loginUsuario" name="loginUsuario" placeholder="Digite seu Usuário" aria-describedby="usuarioHelp" required>
                 </div>
-                <div class="mb-3">
-                    <label for="senha" class="form-label">Senha <span class="text-danger">*</span></label>
-                    <input type="password" class="form-control" id="senha" placeholder="Digite sua Senha" name="senha" required>
+                <div class="form-group">
+                    <label for="loginSenha" class="form-label">Senha <span class="text-danger">*</span></label>
+                    <input type="password" class="form-control" id="loginSenha" name="loginSenha" placeholder="Digite sua Senha" required>
                     <a href="/redefinirSenha" class="forgot-password-link">Esqueci minha senha</a>
                 </div>
                 <button type="submit" class="btn btn-primary">Entrar</button>
                 <p class="signup-link">Não tem uma conta? <a href="/cadastros">Cadastrar-se</a></p>
-            </form>
+            </form>            
         </div>
     </div>
 </body>

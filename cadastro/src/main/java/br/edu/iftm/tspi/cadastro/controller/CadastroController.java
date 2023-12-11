@@ -1,6 +1,7 @@
 package br.edu.iftm.tspi.cadastro.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,8 +27,10 @@ public class CadastroController {
 
     @PostMapping("/inserir")
     public String inserirCadastro(@ModelAttribute("cadastro") Cadastro cadastro) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        cadastro.setCadastroSenha(encoder.encode(cadastro.getCadastroSenha()));
         cadastroDAO.inserirCadastro(cadastro);
-        return "/login";
-    }    
+        return "paginaLogin";
+    }
 }
 

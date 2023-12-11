@@ -1,6 +1,7 @@
 package br.edu.iftm.tspi.cadastro.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,7 +44,11 @@ public class RedefinirSenhaController {
             return "paginaRedefinirSenha";
         }
 
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String senhaCriptografada = encoder.encode(redefinirSenha.getNovaSenha());
+        redefinirSenha.setNovaSenha(senhaCriptografada);
+        
         redefinirSenhaDAO.atualizarSenha(redefinirSenha);
-        return "/login";
+        return "paginaLogin";
     }
 }

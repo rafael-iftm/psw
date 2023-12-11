@@ -14,7 +14,7 @@ public class CadastroDAO {
 
     // Insere um novo cadastro
     public void inserirCadastro(Cadastro cadastro) throws DataAccessException {
-        String sql = "INSERT INTO tb_login (email, nome) VALUES (?, ?)";
-        jdbcTemplate.update(sql, cadastro.getUsuario(), cadastro.getSenha());
+        String sql = "INSERT INTO tb_login (usuario, senha) VALUES (?, ?)";
+        jdbcTemplate.update(sql, cadastro.getCadastroUsuario(), cadastro.getCadastroSenha());
     }
 }

@@ -37,18 +37,18 @@
     <div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
         <div class="form-container">
             <h2 class="form-title">Redefinição de Senha</h2>
-            <form method="POST" action="/redefinirSenha/redefinir">
+            <form method="POST" action="/redefinirSenha/redefinir" th:object="${redefinirSenha}">
                 <div class="form-group">
-                    <label for="usuario" class="form-label">Usuario <span class="text-danger">*</span></label>
-                    <input type="usuario" class="form-control" id="usuario" name="usuario" placeholder="Digite seu Usuario" aria-describedby="usuarioHelp" required>
+                    <label for="usuario" class="form-label">Usuário <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="usuario" th:field="*{usuario}" placeholder="Digite seu Usuário" aria-describedby="usuarioHelp" required>
                 </div>
                 <div class="form-group">
                     <label for="novaSenha" class="form-label">Nova Senha <span class="text-danger">*</span></label>
-                    <input type="password" class="form-control" id="novaSenha" name="novaSenha" placeholder="Digite sua Nova Senha" required>
+                    <input type="password" class="form-control" id="novaSenha" th:field="*{novaSenha}" placeholder="Digite sua Nova Senha" required>
                 </div>
                 <div class="form-group">
                     <label for="confirmaSenha" class="form-label">Confirme a Nova Senha <span class="text-danger">*</span></label>
-                    <input type="password" class="form-control" id="confirmaSenha" name="confirmaSenha" placeholder="Confirme sua Nova Senha" required>
+                    <input type="password" class="form-control" id="confirmaSenha" th:field="*{confirmeNovaSenha}" placeholder="Confirme sua Nova Senha" required>
                 </div>
                 <button type="submit" class="btn btn-primary">Redefinir Senha</button>
                 <p class="login-link"><a href="/login">Voltar para o login</a></p>

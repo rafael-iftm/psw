@@ -14,12 +14,12 @@ public class LoginService {
 
     public boolean verificaSenha(Login loginDigitado) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        Login loginBanco = loginDao.buscarLoginPorUsuario(loginDigitado.getUsuario());
+        Login loginBanco = loginDao.buscarLoginPorUsuario(loginDigitado.getLoginUsuario());
 
         if (loginBanco == null) {
             return false;
         }
 
-        return encoder.matches(loginDigitado.getSenha(), loginBanco.getSenha());
+        return encoder.matches(loginDigitado.getLoginSenha(), loginBanco.getLoginSenha());
     }
 }

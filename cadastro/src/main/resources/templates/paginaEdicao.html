@@ -23,16 +23,16 @@
     </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edição de Cadastro</title>
+    <title>Edição de Contatos</title>
 </head>
 <body>
     <div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
         <div class="form-container">
-            <h2 class="form-title">Editar Cadastro</h2>
-            <form method="POST" action="/cadastros/atualizar/${cadastro.email}">
+            <h2 class="form-title">Editar contatos</h2>
+            <form method="POST" action="/contatos/atualizar/${contatos.email}">
                 <div class="mb-3">
                     <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" th:value="${cadastro.email}" readonly>
+                    <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" th:value="${contatos.email}" readonly>
                 </div>
                 <div class="mb-3">
                     <label for="nome" class="form-label">Nome</label>

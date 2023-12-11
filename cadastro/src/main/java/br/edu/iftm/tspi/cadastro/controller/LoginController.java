@@ -39,7 +39,7 @@ public class LoginController {
         if (loginService.verificaSenha(login)) {
             List<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList("ADMIN");
             Authentication authentication = new UsernamePasswordAuthenticationToken(
-                    login.getUsuario(), login.getSenha(), authorities);
+                    login.getLoginUsuario(), login.getLoginSenha(), authorities);
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
             session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <style>
@@ -38,18 +38,18 @@
     <div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
         <div class="form-container">
             <h2 class="form-title">Formulário de Cadastro</h2>
-            <form method="POST" action="/cadastros/inserir">
+            <form method="POST" action="/cadastros/inserir" th:object="${cadastro}">
                 <div class="form-group">
-                    <label for="usuario" class="form-label">Usuario <span class="text-danger">*</span></label>
-                    <input type="usuario" class="form-control" id="usuario" name="usuario" placeholder="Digite seu Usuario" aria-describedby="usuarioHelp" required>
+                    <label for="cadastroUsuario" class="form-label">Usuário <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="cadastroUsuario" th:field="*{cadastroUsuario}" placeholder="Digite seu Usuário" aria-describedby="usuarioHelp" required>
                 </div>
                 <div class="form-group">
-                    <label for="senha" class="form-label">Senha <span class="text-danger">*</span></label>
-                    <input type="password" class="form-control" id="senha" name="senha" placeholder="Digite sua Senha" required>
+                    <label for="cadastroSenha" class="form-label">Senha <span class="text-danger">*</span></label>
+                    <input type="password" class="form-control" id="cadastroSenha" th:field="*{cadastroSenha}" placeholder="Digite sua Senha" required>
                 </div>
                 <button type="submit" class="btn btn-primary">Enviar</button>
                 <p class="login-link">Já tem uma conta? <a href="/login">Faça o login</a></p>
-            </form>
+            </form>                  
         </div>
     </div>
 </body>
